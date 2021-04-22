@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,15 +35,12 @@ class MyApp extends StatelessWidget {
 }
 
 class SamplePage extends StatefulWidget {
-  //상태를 가질 수 있음
   final String title;
-
   SamplePage(this.title); // constructor
 
   @override
   _SamplePageState createState() => _SamplePageState();
 }
-
 
 class _SamplePageState extends State<SamplePage> {
   bool _isCashButton = true;
@@ -50,7 +48,7 @@ class _SamplePageState extends State<SamplePage> {
 
   // method channel (android & IOS 통신)
   static const platform = const MethodChannel('cashbutton.com/value');
-  
+
   // Text
   String _cashButtonTitle = "캐시버튼 샘플앱_플루터";
   String _cashButtonSettingText = '캐시버튼 설정';
@@ -63,16 +61,22 @@ class _SamplePageState extends State<SamplePage> {
   String _suggestionContents = "캐시버튼과 관련된 문의를 받기 위한 메뉴 노출 가이드";
 
 
+  Future<void> _setCashButtonState() async {
+    bool state;
+    state = await platform.invokeMethod('cashButton_init');
+    setState(() {
+      _isCashButton = state;
+    });
+  }
 
-  // 비동기로 데이터를 받고 수행 Future
   Future<void> _initCashButton(bool checked) async {
     String value;
     try {
       value = await platform.invokeMethod('cashButton', {
-        "cash_button_switch" : checked
+        "cashButton_checked": checked
       });
     } on PlatformException catch (e) {
-      value = '캐시버튼 실행 에러 ${e.message}';
+      print('_initCashButton() --> error: ${e.message}');
     }
   }
 
@@ -80,39 +84,46 @@ class _SamplePageState extends State<SamplePage> {
     String value;
     try {
       value = await platform.invokeMethod('notibar', {
-        "notibar_switch" : checked
+        "notibar_checked": checked
       });
     } on PlatformException catch (e) {
-      value = '노티바 실행 에러 ${e.message}';
+      print('_initNotibar() --> error: ${e.message}');
     }
   }
 
   Future<void> _actionSuggestion() async {
-    String actionValue;
+    String value;
     try {
-      actionValue = await platform.invokeMethod('suggestion');
+      value = await platform.invokeMethod('suggestion');
     } on PlatformException catch (e) {
-      actionValue = '캐시버튼 문의 실행 에러 ${e.message}';
+      print('_actionSuggestion() --> error: ${e.message}');
     }
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+    _setCashButtonState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    // bool cashButtonSwitch = _cashButtonSwitch;
     return MaterialApp(
-        home:Scaffold(
-            appBar: AppBar(
-              title: Text(widget.title),
-            ),
-            backgroundColor: Color(0xff8c9eff),
-            body: ListView(
-              children: <Widget> [
-                titleSection(),
-                cashButtonSection(),
-                notibarSection(),
-                suggestionSection(),
-              ],
-            ),
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text(widget.title),
+          ),
+          backgroundColor: Color(0xff8c9eff),
+          body: ListView(
+            children: <Widget>[
+              titleSection(),
+              cashButtonSection(),
+              notibarSection(),
+              suggestionSection(),
+            ],
+          ),
         ));
   }
 
@@ -121,11 +132,11 @@ class _SamplePageState extends State<SamplePage> {
     return Container(
       padding: const EdgeInsets.all(32),
       child: Row(
-        children:<Widget> [
+        children: <Widget>[
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget> [
+              children: <Widget>[
                 Image(image: AssetImage('images/image_haru.png')),
 
                 Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
@@ -156,17 +167,17 @@ class _SamplePageState extends State<SamplePage> {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget> [
+        children: <Widget>[
           Row(
-            children: <Widget> [
+            children: <Widget>[
               Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
 
               Switch(
                 value: _isCashButton,
-                onChanged: (bool checkedd){
+                onChanged: (bool checked){
                   setState(() {
-                    _isCashButton = checkedd;
-                    _initCashButton(_isCashButton);
+                    _isCashButton = checked;
+                    _initCashButton(checked);
                   });
                 },
               ),
@@ -204,15 +215,15 @@ class _SamplePageState extends State<SamplePage> {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget> [
+        children: <Widget>[
           Row(
-            children: <Widget> [
+            children: <Widget>[
               Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
               Switch(
                 value: _isNotibar,
-                onChanged: (bool checkedd){
+                onChanged: (bool checked) {
                   setState(() {
-                    _isNotibar = checkedd;
+                    _isNotibar = checked;
                     _initNotibar(_isNotibar);
                   });
                 },
@@ -251,7 +262,7 @@ class _SamplePageState extends State<SamplePage> {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget> [
+        children: <Widget>[
           FlatButton(
             onPressed: _actionSuggestion,
             child: Row(
@@ -290,8 +301,6 @@ class _SamplePageState extends State<SamplePage> {
       ),
     );
   }
-
-
 }
 
 

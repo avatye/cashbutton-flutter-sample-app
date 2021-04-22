@@ -1,6 +1,5 @@
 package com.avatye.cashbutton;
 
-import android.app.Activity;
 import android.app.Application;
 
 import com.avatye.sdk.cashbutton.CashButtonConfig;
@@ -11,19 +10,8 @@ public class App extends Application {    // 어플리케이션 컴포넌트들 
     @Override
     public void onCreate() {
         super.onCreate();
-        /** cash-button initializer */
-        CashNotifyModel notifyModel = new CashNotifyModel(this, true, "ADBalloonFlutter", 0, 0);     // 노티바 설정값  (context, 노티바설정유무, 앱명, 노티바 아이콘 리소스 id, 상단 상태바 아이콘 리소스 id)
+        CashNotifyModel notifyModel = new CashNotifyModel(this, true, "ADBalloonFlutter", 0, 0);
         CashButtonConfig.initializer(this, CashButtonPosition.END, notifyModel);
-    }
-
-    private Activity mCurrentActivity = null;
-
-    public Activity getCurrentActivity() {
-        return mCurrentActivity;
-    }
-
-    public void setCurrentActivity(Activity mCurrentActivity) {
-        this.mCurrentActivity = mCurrentActivity;
     }
 }
 

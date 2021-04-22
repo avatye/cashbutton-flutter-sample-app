@@ -22,72 +22,72 @@ public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "cashbutton.com/value";
 
     private CashButtonLayout cashButton;
-    
-
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
 
-        // flutter 와 통신할 때
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
                         (call, result) -> {
                             switch (call.method) {
+                                case "cashButton_init": {
+                                    init();
+                                    result.success(CashButtonConfig.getCashButtonState());
+                                    break;
+                                }
                                 case "cashButton": {
-                                    result.success("success CashButton");
-                                    boolean isChecked = call.argument("cash_button_switch");
+                                    boolean isChecked = call.argument("cashButton_checked");
                                     startCashButton(isChecked);
                                     break;
                                 }
 
                                 case "notibar": {
                                     result.success("success notibar");
-                                    boolean isChecked = call.argument("notibar_switch");
+                                    boolean isChecked = call.argument("notibar_checked");
                                     startNotibar(isChecked);
                                     break;
                                 }
 
                                 case "suggestion": {
                                     result.success("success suggestion");
-                                    exeSuggestion();
+                                    startSuggestion();
                                     break;
                                 }
                                 default: {
                                     result.notImplemented();
                                 }
-
                             }
                         }
                 );
     }
 
-    private void startCashButton(final boolean isChecked){
-        /** cashButton init */
+
+    private void init() {
         CashButtonLayout.init(this, new ICashButtonCallback() {
             @Override
             public void onSuccess(@NotNull CashButtonLayout cashButtonLayout) {
                 cashButton = cashButtonLayout;
             }
         });
-
         CashButtonConfig.initInviteInfo("캐시 버튼에서 친구 초대를 할 때 사용하는 메시지입니다.");
+    }
 
 
+    private void startCashButton(final boolean isChecked) {
         /** cashButton switch */
         if (isChecked) {
             CashButtonConfig.setCashButtonSnoozeOff();
         } else {
-            CashButtonConfig.setCashButtonSnoozeOn(0);
+            CashButtonConfig.setCashButtonSnoozeOn(1);
         }
     }
 
-    private void startNotibar(final boolean isChecked){
+    private void startNotibar(final boolean isChecked) {
         CashButtonConfig.setAllowNotificationBar(this, isChecked);
     }
 
-    private void exeSuggestion() {
-
+    private void startSuggestion() {
         CashButtonConfig.actionSuggestion(this);
     }
 
