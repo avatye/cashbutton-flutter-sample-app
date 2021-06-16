@@ -137,7 +137,7 @@ class _SamplePageState extends State<SamplePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Image(image: AssetImage('images/image_haru.png')),
+                Image(image: AssetImage('images/avatye_flutter_title_image.png')),
 
                 Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
                 Text(
@@ -268,7 +268,7 @@ class _SamplePageState extends State<SamplePage> {
             child: Row(
               children: [
                 Image.asset(
-                  'images/avatye_ic_cashbutton_blue.png',
+                  'images/avatye_flutter_ic_cashbutton_blue.png',
                   width: 40,
                   height: 40,
                 ),
