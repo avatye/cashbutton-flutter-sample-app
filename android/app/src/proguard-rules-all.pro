@@ -17,7 +17,7 @@
 -keep class com.igaworks.adbrix.model.** { *; }
 
 
-## Channel Tlakw
+## Channel Tlak
 -keep class com.google.zxing.** { *; }
 -keep class com.zoyi.**{
    *;

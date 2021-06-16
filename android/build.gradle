@@ -11,11 +11,15 @@ buildscript {
     }
 }
 
+
 allprojects {
     repositories {
         google()
         jcenter()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url "https://dl.buzzvil.com/public/maven" }
+        maven { url 'http://devrepo.kakao.com:8088/nexus/content/groups/public/' }
     }
 }
 

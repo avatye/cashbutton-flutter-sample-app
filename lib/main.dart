@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,6 +35,7 @@ class MyApp extends StatelessWidget {
 
 class SamplePage extends StatefulWidget {
   final String title;
+
   SamplePage(this.title); // constructor
 
   @override
@@ -43,51 +43,21 @@ class SamplePage extends StatefulWidget {
 }
 
 class _SamplePageState extends State<SamplePage> {
-  bool _isCashButton = true;
-  bool _isNotibar = false;
 
   // method channel (android & IOS 통신)
   static const platform = const MethodChannel('cashbutton.com/value');
 
   // Text
   String _cashButtonTitle = "캐시버튼 샘플앱_플루터";
-  String _cashButtonSettingText = '캐시버튼 설정';
-  String _cashButtonContents = "캐시버튼 상태값";
-
-  String _notibarSettingText = "노티바 설정";
-  String _notibarContents = "노티바 상태값";
-
   String _suggestionText = "캐시버튼 문의";
   String _suggestionContents = "캐시버튼과 관련된 문의를 받기 위한 메뉴 노출 가이드";
 
-
-  Future<void> _setCashButtonState() async {
+  Future<void> _initCashButton() async {
     bool state;
-    state = await platform.invokeMethod('cashButton_init');
-    setState(() {
-      _isCashButton = state;
-    });
-  }
-
-  Future<void> _initCashButton(bool checked) async {
-    String value;
     try {
-      value = await platform.invokeMethod('cashButton', {
-        "cashButton_checked": checked
-      });
+      state = await platform.invokeMethod('cashButton_init');
     } on PlatformException catch (e) {
-      print('_initCashButton() --> error: ${e.message}');
-    }
-  }
-
-  Future<void> _initNotibar(bool checked) async {
-    String value;
-    try {
-      value = await platform.invokeMethod('notibar', {
-        "notibar_checked": checked
-      });
-    } on PlatformException catch (e) {
-      print('_initNotibar() --> error: ${e.message}');
+      print('_setCashButtonState() --> error: ${e.message}');
     }
   }
 
@@ -100,33 +70,28 @@ class _SamplePageState extends State<SamplePage> {
     }
   }
 
-
   @override
   void initState() {
     super.initState();
-    _setCashButtonState();
+    _initCashButton();
   }
-
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title),
-          ),
-          backgroundColor: Color(0xff8c9eff),
-          body: ListView(
-            children: <Widget>[
-              titleSection(),
-              cashButtonSection(),
-              notibarSection(),
-              suggestionSection(),
-            ],
-          ),
-        ));
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      backgroundColor: Color(0xff8c9eff),
+      body: ListView(
+        children: <Widget>[
+          titleSection(),
+          suggestionSection(),
+        ],
+      ),
+    ));
   }
-
 
   titleSection() {
     return Container(
@@ -137,8 +102,8 @@ class _SamplePageState extends State<SamplePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Image(image: AssetImage('images/avatye_flutter_title_image.png')),
-
+                Image(
+                    image: AssetImage('images/avatye_flutter_title_image.png')),
                 Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
                 Text(
                   _cashButtonTitle,
@@ -147,7 +112,6 @@ class _SamplePageState extends State<SamplePage> {
                     color: const Color(0xFFFFFFFF),
                   ),
                 ),
-
                 Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
                 Container(
                   height: 0.5,
@@ -157,101 +121,6 @@ class _SamplePageState extends State<SamplePage> {
               ],
             ),
           )
-        ],
-      ),
-    );
-  }
-
-
-  cashButtonSection() {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-
-              Switch(
-                value: _isCashButton,
-                onChanged: (bool checked){
-                  setState(() {
-                    _isCashButton = checked;
-                    _initCashButton(checked);
-                  });
-                },
-              ),
-
-              Padding(padding: EdgeInsets.fromLTRB(4, 0, 0, 0)),
-              Text(
-                _cashButtonSettingText,
-                style: TextStyle(
-                  fontSize: 18,
-                  color: const Color(0xFFFFFFFF),
-                ),
-              ),
-            ],
-          ),
-
-          Container(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(26, 2, 0, 0),
-              child: Text(
-                _cashButtonContents,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFFB6BAF6),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-  notibarSection() {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-              Switch(
-                value: _isNotibar,
-                onChanged: (bool checked) {
-                  setState(() {
-                    _isNotibar = checked;
-                    _initNotibar(_isNotibar);
-                  });
-                },
-              ),
-
-              Padding(padding: EdgeInsets.fromLTRB(4, 8, 0, 0)),
-              Text(
-                _notibarSettingText,
-                style: TextStyle(
-                  fontSize: 18,
-                  color: const Color(0xFFFFFFFF),
-                ),
-              ),
-            ],
-          ),
-
-          Container(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(26, 2, 0, 0),
-              child: Text(
-                _notibarContents,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFFB6BAF6),
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -272,15 +141,12 @@ class _SamplePageState extends State<SamplePage> {
                   width: 40,
                   height: 40,
                 ),
-
                 Padding(padding: EdgeInsets.fromLTRB(4, 8, 0, 0)),
-                Text(
-                    _suggestionText,
+                Text(_suggestionText,
                     style: TextStyle(
                       fontSize: 18,
                       color: const Color(0xFFFFFFFF),
-                    )
-                )
+                    ))
               ],
             ),
           ),
@@ -302,8 +168,3 @@ class _SamplePageState extends State<SamplePage> {
     );
   }
 }
-
-
-
-
-

@@ -1,6 +1,5 @@
 package com.avatye.cashbutton;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 
@@ -33,22 +32,8 @@ public class MainActivity extends FlutterActivity {
                             switch (call.method) {
                                 case "cashButton_init": {
                                     init();
-                                    result.success(CashButtonConfig.getCashButtonState());
                                     break;
                                 }
-                                case "cashButton": {
-                                    boolean isChecked = call.argument("cashButton_checked");
-                                    startCashButton(isChecked);
-                                    break;
-                                }
-
-                                case "notibar": {
-                                    result.success("success notibar");
-                                    boolean isChecked = call.argument("notibar_checked");
-                                    startNotibar(isChecked);
-                                    break;
-                                }
-
                                 case "suggestion": {
                                     result.success("success suggestion");
                                     startSuggestion();
@@ -70,31 +55,11 @@ public class MainActivity extends FlutterActivity {
                 cashButton = cashButtonLayout;
             }
         });
-        CashButtonConfig.initInviteInfo("캐시 버튼에서 친구 초대를 할 때 사용하는 메시지입니다.");
     }
 
-
-    private void startCashButton(final boolean isChecked) {
-        /** cashButton switch */
-        if (isChecked) {
-            CashButtonConfig.setCashButtonSnoozeOff();
-        } else {
-            CashButtonConfig.setCashButtonSnoozeOn(1);
-        }
-    }
-
-    private void startNotibar(final boolean isChecked) {
-        CashButtonConfig.setAllowNotificationBar(this, isChecked);
-    }
 
     private void startSuggestion() {
         CashButtonConfig.actionSuggestion(this);
-    }
-
-
-    @Override
-    protected void onNewIntent(@NonNull Intent intent) {
-        super.onNewIntent(intent);
     }
 
 
