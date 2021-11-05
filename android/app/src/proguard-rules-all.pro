@@ -59,6 +59,8 @@
 ## AdColony { For removing warnings due to lack of Multi-Window support }
 -dontwarn android.app.Activity
 
+-keep class com.bytedance.sdk.** { *; }
+-keep class com.pgl.sys.ces.* {*;}
 
 # Mobon - Mediation
 -dontwarn com.httpmodule.**

@@ -68,9 +68,12 @@ flutter {
 repositories {
 
     dependencies {
-        implementation 'org.bitbucket.avatye:src_cashbutton_sdk_aos:1.4.1g'
+        implementation 'org.bitbucket.avatye:src_cashbutton_sdk_aos:1.5.2'
         /** androidx.appcompat:appcompat:x.x.x 을 사용하고 있지 않을 경우 추가 필요 */
         implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+
+        implementation 'com.pangle.global:ads-sdk:3.6.0.4'
+        implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     }
 
 }

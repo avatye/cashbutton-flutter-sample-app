@@ -54,7 +54,7 @@ public class MainActivity extends FlutterActivity {
             public void onSuccess(@NotNull CashButtonLayout cashButtonLayout) {
                 cashButton = cashButtonLayout;
             }
-        });
+        }, false);
     }
 
 
