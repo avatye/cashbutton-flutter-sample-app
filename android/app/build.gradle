@@ -27,7 +27,7 @@ if (flutterVersionName == null) {
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/java'
@@ -46,7 +46,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.avatye.sdk.cashbutton"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -68,11 +68,11 @@ flutter {
 repositories {
 
     dependencies {
-        implementation 'org.bitbucket.avatye:src_cashbutton_sdk_aos:1.5.2'
+        implementation 'org.bitbucket.avatye:src_cashbutton_sdk_aos:1.5.36'
+
         /** androidx.appcompat:appcompat:x.x.x 을 사용하고 있지 않을 경우 추가 필요 */
         implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
 
-        implementation 'com.pangle.global:ads-sdk:3.6.0.4'
         implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     }
 

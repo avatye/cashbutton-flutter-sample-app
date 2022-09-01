@@ -60,12 +60,6 @@
             android:name="avatye_market"
             android:value="googleplay" />
         <meta-data
-            android:name="igaworks_app_key"
-            android:value="719520234" />
-        <meta-data
-            android:name="igaworks_hash_key"
-            android:value="6287c84787094833" />
-        <meta-data
             android:name="com.buzzvil.APP_KEY"
             android:value="app-pub-150484850088628" />
 
@@ -73,12 +67,6 @@
         <meta-data
             android:name="avatye_log"
             android:value="true" />
-
-        <!-- add the provider between the application tag -->
-        <provider
-            android:name="com.bytedance.sdk.openadsdk.multipro.TTMultiProvider"
-            android:authorities="${applicationId}.TTMultiProvider"
-            android:exported="false" />
 
     </application>
 </manifest>
